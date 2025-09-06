@@ -73,7 +73,6 @@ How to use: Open in a modern browser. No build step required.
           <select id="study-deck"></select>
         </label>
         <button id="start-study-btn">Next Card ⏭️</button>
-        <button id="reveal-btn">🔃 Flip card 🔃</button>
       </div>
       <div id="card-area" class="card">
         <div id="card-front" class="card-face"></div>
@@ -81,10 +80,11 @@ How to use: Open in a modern browser. No build step required.
       </div>
       <div class="buttons">
         <div id="response-buttons" class="hidden">
-          <button data-grade="again">Again ❌</button>
           <!-- <button data-grade="hard">Hard</button> -->
           <button data-grade="good">Good ✅</button>
+          <button data-grade="again">Again ❌</button>
           <!-- <button data-grade="easy">Easy</button> -->
+          <button id="reveal-btn">🔃 Flip card 🔃</button>
         </div>
       </div>
       <p id="study-status"></p>
