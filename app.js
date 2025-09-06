@@ -1,13 +1,9 @@
 /*
 Purpose: Glue UI <-> db.js <-> scheduler.js. Minimal, readable.
 This version matches the original index.html that has three views (Decks, Editor, Study)
-and nav buttons with data-nav attributes. It adds a "Delete Note" button to the Study view
-that removes the entire note (and its cards) after a confirmation prompt.
-
-What changed from your working version:
-- We programmatically add a red "Delete Note" button into the Study view's .buttons row.
-- On click, it asks for confirmation and calls dbApi.deleteNote(currentNote.id).
-- After deletion, it fetches the next due card (or shows "No due cards" message).
+and nav buttons with data-nav attributes. The "Delete Note" button is injected into the
+Study view top controls (next to Get Next Card) so it sits with the Next/Flip controls.
+Deleting a note removes its cards and immediately fetches the next due card.
 */
 
 const $ = sel => document.querySelector(sel);
@@ -161,15 +157,16 @@ async function renderNoteList() {
 let currentCard = null;
 let currentNote = null;
 
-// Ensure there's a Delete Note button in the Study view
+// Ensure there's a Delete Note button in the Study view controls area (after start button)
 function ensureStudyDeleteButton() {
-  const container = $('#view-study .buttons');
+  const container = $('#view-study .controls'); // top controls container in your index.html
   if (!container) return;
   if ($('#delete-note-btn')) return; // already added
   const del = document.createElement('button');
   del.id = 'delete-note-btn';
   del.textContent = 'Delete Note';
   del.style.color = 'red';
+  del.style.marginLeft = '8px'; // small spacing so it's not crammed
   del.title = 'Remove this note (and its cards) from the deck';
   // Click handler with confirmation
   del.addEventListener('click', async () => {
@@ -183,7 +180,11 @@ function ensureStudyDeleteButton() {
     setDeleteButtonEnabled(false);
     await getNextCard();
   });
-  container.appendChild(del);
+
+  // place it after the start button if present, otherwise append to controls
+  const startBtn = container.querySelector('#start-study-btn');
+  if (startBtn) container.insertBefore(del, startBtn.nextSibling);
+  else container.appendChild(del);
 }
 function setDeleteButtonEnabled(enabled) {
   const btn = $('#delete-note-btn');
