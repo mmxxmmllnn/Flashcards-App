@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<!--
+Purpose: Minimal single-page PWA flashcards app shell.
+How to use: Open in a modern browser. No build step required.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <title>Flashcards</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css" />
+  <!-- Dexie (IndexedDB wrapper) via CDN -->
+  <script defer src="https://unpkg.com/dexie@3.2.4/dist/dexie.min.js"></script>
+  <!-- App modules -->
+  <script defer src="scheduler.js"></script>
+  <script defer src="db.js"></script>
+  <script defer src="app.js"></script>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+</head>
+<body>
+  <header class="bar">
+    <h1>Flashcards</h1>
+    <nav>
+      <button data-nav="study">📖 Study 📖</button>
+      <button data-nav="decks">Decks</button>
+      <button data-nav="editor">Editor</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Decks view -->
+    <section id="view-decks" class="view">
+      <h2>Decks</h2>
+      <div class="controls">
+        <input id="new-deck-name" placeholder="New deck name" />
+        <button id="add-deck-btn">Add Deck</button>
+        <button id="export-json-btn">Export JSON</button>
+        <button id="export-csv-btn">Export CSV</button>
+        <label class="filelabel">
+          Import
+          <input type="file" id="import-file" accept=".json,.csv" />
+        </label>
+      </div>
+      <ul id="deck-list"></ul>
+    </section>
+
+    <!-- Editor view -->
+    <section id="view-editor" class="view hidden">
+      <h2>Editor</h2>
+      <div class="controls">
+        <label>Deck:
+          <select id="editor-deck"></select>
+        </label>
+      </div>
+      <div class="note-form">
+        <input id="field-front" placeholder="Front (question/term)" />
+        <textarea id="field-back" placeholder="Back (answer/definition)"></textarea>
+        <button id="save-note-btn">Save card</button>
+      </div>
+
+      <h3>Cards in deck</h3>
+      <ul id="note-list"></ul>
+    </section>
+
+    <!-- Study view -->
+    <section id="view-study" class="view hidden">
+      <h2>Study</h2>
+      <div class="controls">
+        <label>Deck:
+          <select id="study-deck"></select>
+        </label>
+        <button id="start-study-btn">Next Card ⏭️</button>
+        <button id="reveal-btn">🔃 Flip card 🔃</button>
+      </div>
+      <div id="card-area" class="card">
+        <div id="card-front" class="card-face"></div>
+        <div id="card-back" class="card-face hidden"></div>
+      </div>
+      <div class="buttons">
+        <div id="response-buttons" class="hidden">
+          <button data-grade="again">Again ❌</button>
+          <!-- <button data-grade="hard">Hard</button> -->
+          <button data-grade="good">Good ✅</button>
+          <!-- <button data-grade="easy">Easy</button> -->
+        </div>
+      </div>
+      <p id="study-status"></p>
+    </section>
+  </main>
+
+  <footer class="bar">
+    <small>Local, offline, no tracking. v0.1</small>
+  </footer>
+
+  <script>
+    // Register service worker (safe to fail if not served over HTTPS/localhost)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

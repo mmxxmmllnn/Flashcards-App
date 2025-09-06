@@ -1,0 +1,24 @@
+/* Purpose: Minimal styles so it's usable on phone/desktop. No visual candy. */
+:root { --pad: 10px; --gap: 8px; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; background-color: #f2f7fa; }
+.bar { display: flex; align-items: center; justify-content: space-between; padding: var(--pad); border-bottom: 1px solid #ccc; }
+footer.bar { border-top: 1px solid #ccced0; border-bottom: none; }
+main { padding: var(--pad); max-width: 800px; margin: 0 auto; }
+
+.view.hidden { display: none; }
+.controls { display: flex; flex-wrap: wrap; gap: var(--gap); margin-bottom: var(--pad); }
+.filelabel { border: 1px solid #ccced0; padding: 4px 8px; cursor: pointer; }
+.filelabel input { display: none; }
+
+ul { list-style: none; padding: 0; }
+li { padding: 6px; border-bottom: 1px solid #f2f7fa; display: flex; align-items: center; justify-content: space-between; gap: var(--gap); }
+
+.card { border: 1px solid #ccced0; padding: var(--pad); min-height: 140px; }
+.card-face.hidden { display: none; }
+.card-face { white-space: pre-wrap; }
+
+.buttons { margin-top: var(--pad); display: flex; gap: var(--gap); align-items: center; }
+
+input, textarea, select, button { font: inherit; padding: 6px; }
+textarea { width: 100%; min-height: 80px; }
