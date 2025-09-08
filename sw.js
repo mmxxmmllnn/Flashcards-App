@@ -2,7 +2,7 @@
 Purpose: Cache core assets for offline use.
 Strategy: "Cache, falling back to network" for GET; versioned cache for updates.
 */
-const CACHE = 'Flashcards-App.v0.1.3';
+const CACHE = 'Flashcards-App.v0.1.4';
 const ASSETS = [
   './',
   './index.html',
@@ -36,6 +36,7 @@ self.addEventListener('fetch', (e) => {
     }).catch(() => cached))
   );
 });
+
 
 
 
